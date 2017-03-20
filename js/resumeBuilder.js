@@ -9,7 +9,7 @@ var bio = {
     },
     "welcomeMessage": "Welcome !",
     "skills": ["JavaScript", "Java", "Python"],
-    "bioPic": "images/Rahul.jpg"
+    "biopic": "images/Rahul.jpg"
 };
 
 var work = {
@@ -55,13 +55,13 @@ var projects = {
             "title": "NIST Data Science Pre Pilot Evaluation ",
             "dates": "September 2015 - December 2015",
             "description": "Researched extensively on the huge training data provided by the Pre Pilot using various data analysis techniques. Built a prediction pipeline which predicted traffic events in a geographical bounding box in Virginia and Massachusetts",
-            "images": []
+            "images": ["https://placekitten.com/500/201","https://placekitten.com/g/500/200"]
         },
         {
             "title": "HTTP Log Analyzer and Report Generation Tool",
             "dates": "March 2014 - May 2014",
             "description": "Worked with a team that developed a tool to collect logs from HTTP servers and then provides an effective real-time summarization via charts. Created a pipeline in Python to extract useful information from raw logs between specific dates and provided visualizations using various charting libraries",
-            "images": []
+            "images": ["https://placekitten.com/g/500/203","https://placekitten.com/g/500/205"]
         }
     ],
 };
@@ -71,7 +71,7 @@ var education = {
             "name": "University of Florida",
             "location": "Gainesville",
             "degree": "Masters",
-            "majors": "Computer & Information Sciences",
+            "majors": ["Computer & Information Sciences","Bla"],
             "dates": "August 2015 - April 2017",
             "url": "http://www.ufl.edu/"
         },
@@ -79,16 +79,16 @@ var education = {
             "name": "Ganpat University",
             "location": "Mehsana",
             "degree": "Bachelors",
-            "majors": "Computer Engineering",
+            "majors": ["Computer Engineering"],
             "dates": "August 2010 - May 2014",
-            "url": "#"
+            "url": "http://www.ganpatuniversity.ac.in/"
         }
     ],
     "onlineCourses": [{
         "title": "Front End Nanodegree",
         "school": "Udacity",
         "dates": "March 2017",
-        "url": "#"
+        "url": "https://www.udacity.com/"
     }],
 };
 
@@ -97,7 +97,7 @@ bio.display = function(){
 	var formattedRole = HTMLheaderRole.replace("%data%",bio.role);
 	var formattedName = HTMLheaderName.replace("%data%",bio.name);
 	var formattedWelcomeMessage = HTMLwelcomeMsg.replace("%data%",bio.welcomeMessage);
-	var formattedPicture = HTMLbioPic.replace("%data%",bio.bioPic);
+	var formattedPicture = HTMLbioPic.replace("%data%",bio.biopic);
 
 	var formattedMobile = HTMLmobile.replace("%data%",bio.contacts.mobile);
 	var formattedEmail = HTMLemail.replace("%data%",bio.contacts.email);
@@ -109,16 +109,8 @@ bio.display = function(){
 	$("#header").append(formattedWelcomeMessage);
 	$("#header").append(formattedPicture);
 
-	$("#topContacts").append(formattedMobile);
-	$("#topContacts").append(formattedEmail);
-	$("#topContacts").append(formattedGithub);
-	$("#topContacts").append(formattedLocation);
-
-	$("#footerContacts").append(formattedMobile);
-	$("#footerContacts").append(formattedEmail);
-	$("#footerContacts").append(formattedGithub);
-	$("#footerContacts").append(formattedLocation);
-
+	$("#topContacts,#footerContacts").append(formattedMobile,formattedEmail,formattedGithub,formattedLocation);
+	
 	if(bio.skills.length > 0) {
 		$("#header").append(HTMLskillsStart);
 		bio.skills.forEach(function(skill){
@@ -126,7 +118,7 @@ bio.display = function(){
 			$("#skills").append(formattedSkill);
 		});
 	}
-}
+};
 
 
 work.display = function(){
@@ -145,7 +137,7 @@ work.display = function(){
 			$(".work-entry:last").append(formattedWorkDescription);
 		});
 	}
-}
+};
 
 projects.display = function(){
 	if(projects.projects.length > 0){
@@ -167,22 +159,27 @@ projects.display = function(){
 			}
 		});
 	}
-}
+};
 
 education.display = function(){
 	if(education.schools.length>0){
 		education.schools.forEach(function(school){
 			$("#education").append(HTMLschoolStart);
-			var formattedSchoolName = HTMLschoolName.replace("%data%",school.name);
+			var formattedSchoolName = HTMLschoolName.replace("%data%",school.name).replace("#",school.url);
 			var formattedSchoolDegree = HTMLschoolDegree.replace("%data%",school.degree);
 			var formattedSchoolDates = HTMLschoolDates.replace("%data%",school.dates);
 			var formattedSchoolLocation = HTMLschoolLocation.replace("%data%",school.location);
-			var formattedSchoolMajors = HTMLschoolMajor.replace("%data%",school.majors);
 
 			$(".education-entry:last").append(formattedSchoolName+formattedSchoolDegree);
 			$(".education-entry:last").append(formattedSchoolDates);
 			$(".education-entry:last").append(formattedSchoolLocation);
-			$(".education-entry:last").append(formattedSchoolMajors);
+
+			if(school.majors.length>0){
+				school.majors.forEach(function(major){
+					var formattedSchoolMajors = HTMLschoolMajor.replace("%data%",major);
+					$(".education-entry:last").append(formattedSchoolMajors);
+				});
+			}
 		});
 	}
 
@@ -190,7 +187,7 @@ education.display = function(){
 		$("#education").append(HTMLonlineClasses);
 		education.onlineCourses.forEach(function(course){
 			$("#education").append(HTMLschoolStart);
-			var formattedCourseTitle = HTMLonlineTitle.replace("%data%",course.title);
+			var formattedCourseTitle = HTMLonlineTitle.replace("%data%",course.title).replace("#",course.url);
 			var formattedCourseSchool = HTMLonlineSchool.replace("%data%",course.school);
 			$(".education-entry:last").append(formattedCourseTitle+formattedCourseSchool);
 			var formattedCourseDates = HTMLonlineDates.replace("%data%",course.dates);
@@ -198,7 +195,7 @@ education.display = function(){
 
 		});
 	}
-}
+};
 
 $("#mapDiv").append(googleMap);
 
